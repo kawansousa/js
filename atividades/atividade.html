@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cadastro de Pessoas</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f2f5;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .container {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      label {
+        margin-top: 10px;
+        display: block;
+        font-weight: 500;
+        color: #555;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 4px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+
+      button {
+        width: 100%;
+        margin-top: 20px;
+        padding: 12px;
+        background-color: #007bff;
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      .resultado {
+        margin-top: 20px;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 6px;
+        font-size: 15px;
+        color: #333;
+      }
+
+      .pessoa {
+        margin-bottom: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Cadastro de Pessoas</h2>
+      <label for="nomePessoa">Nome:</label>
+      <input type="text" id="nomePessoa" placeholder="Digite o nome" />
+
+      <label for="idadePessoa">Idade:</label>
+      <input type="number" id="idadePessoa" placeholder="Digite a idade" />
+
+      <button onclick="cadastrarPessoa()">Cadastrar</button>
+
+      <div id="listaPessoas" class="resultado"></div>
+    </div>
+
+    <script>
+      const pessoas = [];
+
+      function cadastrarPessoa() {
+        const nome = document.getElementById("nomePessoa").value.trim();
+        const idade = parseInt(document.getElementById("idadePessoa").value);
+
+        if (!nome || isNaN(idade)) {
+          alert("Por favor, preencha o nome e a idade corretamente.");
+          return;
+        }
+
+        const pessoa = { nome: nome, idade: idade };
+        pessoas.push(pessoa);
+        mostrarPessoas();
+
+        // Limpar campos
+        document.getElementById("nomePessoa").value = "";
+        document.getElementById("idadePessoa").value = "";
+      }
+
+      function mostrarPessoas() {
+        const lista = document.getElementById("listaPessoas");
+        lista.innerHTML = "<strong>Pessoas cadastradas:</strong><br>";
+        pessoas.forEach((p, i) => {
+          lista.innerHTML += `<div class="pessoa">${i + 1}. ${p.nome}, ${
+            p.idade
+          } anos</div>`;
+        });
+      }
+    </script>
+  </body>
+</html>

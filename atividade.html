@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Controle de Presença</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f0f4f8;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      h2 {
+        color: #333;
+      }
+
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      input,
+      select,
+      button {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-top: 10px;
+        width: 100%;
+      }
+
+      button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      .aluno {
+        background-color: #eaf4ff;
+        padding: 10px;
+        border-radius: 6px;
+        margin: 5px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .presente {
+        color: green;
+        font-weight: bold;
+      }
+
+      .ausente {
+        color: red;
+        font-weight: bold;
+      }
+
+      #resumo {
+        font-weight: bold;
+        margin-top: 20px;
+        text-align: center;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>📋 Controle de Presença</h2>
+
+    <div class="card">
+      <input type="text" id="nome" placeholder="Nome do aluno" />
+      <select id="presenca">
+        <option value="presente">Presente</option>
+        <option value="ausente">Ausente</option>
+      </select>
+      <button onclick="adicionarAluno()">Adicionar Aluno</button>
+    </div>
+
+    <div class="card" id="listaAlunos">
+      <h3>📚 Lista de Alunos:</h3>
+    </div>
+
+    <div class="card" id="resumo">Nenhum aluno adicionado ainda.</div>
+
+    <script>
+      const alunos = [];
+
+      function adicionarAluno() {
+        const nome = document.getElementById("nome").value.trim();
+        const presenca = document.getElementById("presenca").value;
+
+        if (nome === "") {
+          alert("Por favor, insira um nome válido.");
+          return;
+        }
+
+        alunos.push({ nome, presenca });
+        document.getElementById("nome").value = "";
+        atualizarLista();
+        atualizarResumo();
+      }
+
+      function atualizarLista() {
+        const listaDiv = document.getElementById("listaAlunos");
+        listaDiv.innerHTML = "<h3>📚 Lista de Alunos:</h3>";
+
+        alunos.forEach((aluno, index) => {
+          const statusClass =
+            aluno.presenca === "presente" ? "presente" : "ausente";
+          listaDiv.innerHTML += `
+          <div class="aluno">
+            <span>${index + 1}. ${aluno.nome}</span>
+            <span class="${statusClass}">${aluno.presenca}</span>
+          </div>
+        `;
+        });
+      }
+
+      function atualizarResumo() {
+        const totalPresentes = alunos.filter(
+          (a) => a.presenca === "presente"
+        ).length;
+        const totalAusentes = alunos.length - totalPresentes;
+
+        const resumo = document.getElementById("resumo");
+        resumo.innerHTML = `
+        Total de Alunos: ${alunos.length} <br>
+        ✅ Presentes: ${totalPresentes} <br>
+        ❌ Ausentes: ${totalAusentes}
+      `;
+      }
+    </script>
+  </body>
+</html>

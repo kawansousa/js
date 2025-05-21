@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" name="" id="" />
+    <dialog>
+      <p>aa</p>
+    </dialog>
+    <script>
+      //* keydown é acionado quando uma tecla é pressionada.( captuta tudo, inclusive teclas especiais como shift, ctrl, alt, etc.)
+      const input = document.querySelector("input");
+      /*  input.addEventListener("keydown", (e) => {
+        console.log(e.key);
+      }); */
+
+      //* keypress é acionado quando uma tecla é pressionada e liberada. (captura apenas letras, números e símbolos, difrentemente do keydown que captura tudo.)
+      input.addEventListener("keypress", (e) => {
+        console.log(e.key);
+      });
+    </script>
+  </body>
+</html>

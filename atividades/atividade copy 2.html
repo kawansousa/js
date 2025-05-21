@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lista de Tarefas</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f5f6fa;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        text-align: center;
+        color: #2f3640;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 15px;
+        background-color: #44bd32;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #4cd137;
+      }
+
+      .tarefas {
+        margin-top: 20px;
+        background-color: #f0f0f0;
+        padding: 15px;
+        border-radius: 6px;
+      }
+
+      .tarefa {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        padding: 8px 10px;
+        background-color: #fff;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+      }
+
+      .tarefa:hover {
+        background-color: #e0e0e0;
+      }
+
+      .concluida {
+        text-decoration: line-through;
+        color: #888;
+      }
+
+      .excluir-btn {
+        background-color: transparent;
+        border: none;
+        color: #e84118;
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      .excluir-btn:hover {
+        color: #c23616;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Lista de Tarefas</h2>
+      <input type="text" id="inputTarefa" placeholder="Digite uma tarefa" />
+      <button onclick="adicionarTarefa()">Adicionar</button>
+      <div id="listaTarefas" class="tarefas"></div>
+    </div>
+
+    <script>
+      const tarefas = [];
+
+      function adicionarTarefa() {
+        const input = document.getElementById("inputTarefa");
+        const tarefa = input.value.trim();
+
+        if (tarefa === "") {
+          alert("Digite uma tarefa válida.");
+          return;
+        }
+
+        tarefas.push(tarefa);
+        mostrarTarefas();
+        input.value = "";
+      }
+
+      function excluirTarefa(indice) {
+        tarefas.splice(indice, 1);
+        mostrarTarefas();
+      }
+
+      function mostrarTarefas() {
+        const lista = document.getElementById("listaTarefas");
+        lista.innerHTML = "<strong>Tarefas:</strong><br>";
+
+        for (let i = 0; i < tarefas.length; i++) {
+          const div = document.createElement("div");
+          div.classList.add("tarefa");
+
+          const span = document.createElement("span");
+          span.textContent = `${i + 1}. ${tarefas[i]}`;
+          span.addEventListener("click", function () {
+            span.classList.toggle("concluida");
+          });
+
+          const btn = document.createElement("button");
+          btn.textContent = "❌";
+          btn.classList.add("excluir-btn");
+          btn.addEventListener("click", function () {
+            excluirTarefa(i);s
+          });
+
+          div.appendChild(span);
+          div.appendChild(btn);
+          lista.appendChild(div);
+        }
+      }
+    </script>
+  </body>
+</html>

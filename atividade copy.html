@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Média de Números</title>
+  </head>
+  <body>
+    <h2>Calcular Média</h2>
+
+    <input type="number" id="numero" placeholder="Digite um número" />
+    <button onclick="adicionarNumero()">Adicionar</button>
+    <button onclick="calcularMedia()">Calcular Média</button>
+
+    <p id="resultado"></p>
+
+    <script>
+      const numeros = [];
+
+      function adicionarNumero() {
+        const num = parseFloat(document.getElementById("numero").value);
+
+        if (!isNaN(num)) {
+          numeros.push(num);
+          document.getElementById("numero").value = "";
+        }
+      }
+
+      function calcularMedia() {
+        if (numeros.length === 0) {
+          document.getElementById("resultado").textContent =
+            "Nenhum número adicionado!";
+          return;
+        }
+
+        let soma = 0;
+        for (let i = 0; i < numeros.length; i++) {
+          soma += numeros[i];
+        }
+        const media = soma / numeros.length;
+        document.getElementById(
+          "resultado"
+        ).textContent = `Média: ${media.toFixed(2)}`;
+      }
+    </script>
+  </body>
+</html>

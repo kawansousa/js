@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Tarefas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    input[type="text"] {
+      width: 75%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 15px;
+      margin-left: 5px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button.remover {
+      background-color: #dc3545;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 10px;
+      margin: 5px 0;
+      background-color: #f5f5f5;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    li.concluida {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    .resumo {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Lista de Tarefas</h2>
+    <input type="text" id="tarefa" placeholder="Digite uma tarefa...">
+    <button onclick="adicionarTarefa()">Adicionar</button>
+
+    <ul id="lista-tarefas"></ul>
+
+    <div class="resumo">
+      Tarefas pendentes: <span id="pendentes">0</span><br>
+      Tarefas concluídas: <span id="concluidas">0</span>
+    </div>
+  </div>
+
+  <script>
+    const tarefas = [];
+
+    function adicionarTarefa() {
+      const input = document.getElementById('tarefa');
+      const descricao = input.value.trim();
+
+      if (descricao === "") {
+        alert("Digite uma descrição para a tarefa.");
+        return;
+      }
+
+      tarefas.push({ descricao, concluida: false });
+      input.value = "";
+      atualizarLista();
+    }
+
+    function alternarConclusao(index) {
+      tarefas[index].concluida = !tarefas[index].concluida;
+      atualizarLista();
+    }
+
+    function removerTarefa(index) {
+      tarefas.splice(index, 1);
+      atualizarLista();
+    }
+
+    function atualizarLista() {
+      const ul = document.getElementById('lista-tarefas');
+      ul.innerHTML = "";
+
+      tarefas.forEach((tarefa, index) => {
+        const li = document.createElement('li');
+        li.className = tarefa.concluida ? 'concluida' : '';
+        li.innerHTML = `
+          <span onclick="alternarConclusao(${index})" style="flex: 1; cursor: pointer;">
+            ${tarefa.descricao}
+          </span>
+          <button class="remover" onclick="removerTarefa(${index})">X</button>
+        `;
+        ul.appendChild(li);
+      });
+
+      const pendentes = tarefas.filter(t => !t.concluida).length;
+      const concluidas = tarefas.filter(t => t.concluida).length;
+
+      document.getElementById('pendentes').textContent = pendentes;
+      document.getElementById('concluidas').textContent = concluidas;
+    }
+  </script>
+</body>
+</html>

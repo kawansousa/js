@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Controle Financeiro</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f3f3;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    input, select, button {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    .resumo {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .positivo { color: green; }
+    .negativo { color: red; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Controle Financeiro</h2>
+    <label>Descrição:</label>
+    <input type="text" id="descricao">
+
+    <label>Valor (R$):</label>
+    <input type="number" id="valor" step="0.01">
+
+    <label>Tipo:</label>
+    <select id="tipo">
+      <option value="receita">Receita</option>
+      <option value="despesa">Despesa</option>
+    </select>
+
+    <button onclick="adicionarLancamento()">Adicionar</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Descrição</th>
+          <th>Valor (R$)</th>
+          <th>Tipo</th>
+        </tr>
+      </thead>
+      <tbody id="tabela-lancamentos"></tbody>
+    </table>
+
+    <div class="resumo">
+      Total de Receitas: R$ <span id="total-receitas">0.00</span><br>
+      Total de Despesas: R$ <span id="total-despesas">0.00</span><br>
+      Saldo Final: <span id="saldo-final" class="positivo">R$ 0.00</span>
+    </div>
+  </div>
+
+  <script>
+    const lancamentos = [];
+
+    function adicionarLancamento() {
+      const descricao = document.getElementById('descricao').value.trim();
+      const valor = parseFloat(document.getElementById('valor').value);
+      const tipo = document.getElementById('tipo').value;
+
+      if (!descricao || isNaN(valor) || valor <= 0) {
+        alert("Preencha todos os campos corretamente.");
+        return;
+      }
+
+      lancamentos.push({ descricao, valor, tipo });
+      atualizarTabela();
+      atualizarResumo();
+      limparCampos();
+    }
+
+    function atualizarTabela() {
+      const tabela = document.getElementById('tabela-lancamentos');
+      tabela.innerHTML = "";
+
+      lancamentos.forEach(l => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${l.descricao}</td>
+          <td>R$ ${l.valor.toFixed(2)}</td>
+          <td>${l.tipo}</td>
+        `;
+        tabela.appendChild(tr);
+      });
+    }
+
+    function atualizarResumo() {
+      const totalReceitas = lancamentos
+        .filter(l => l.tipo === 'receita')
+        .reduce((acc, l) => acc + l.valor, 0);
+
+      const totalDespesas = lancamentos
+        .filter(l => l.tipo === 'despesa')
+        .reduce((acc, l) => acc + l.valor, 0);
+
+      const saldo = totalReceitas - totalDespesas;
+
+      document.getElementById('total-receitas').textContent = totalReceitas.toFixed(2);
+      document.getElementById('total-despesas').textContent = totalDespesas.toFixed(2);
+      const saldoElement = document.getElementById('saldo-final');
+      saldoElement.textContent = `R$ ${saldo.toFixed(2)}`;
+      saldoElement.className = saldo >= 0 ? 'positivo' : 'negativo';
+    }
+
+    function limparCampos() {
+      document.getElementById('descricao').value = '';
+      document.getElementById('valor').value = '';
+      document.getElementById('tipo').value = 'receita';
+    }
+  </script>
+</body>
+</html>
